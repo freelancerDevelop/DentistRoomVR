@@ -1,9 +1,9 @@
 /************************************************************************************
 
-Copyright   :   Copyright (c) Facebook Technologies, LLC and its affiliates. All rights reserved.
+Copyright   :   Copyright 2017 Oculus VR, LLC. All Rights reserved.
 
-Licensed under the Oculus SDK License Version 3.4.1 (the "License");
-you may not use the Oculus SDK except in compliance with the License,
+Licensed under the Oculus VR Rift SDK License Version 3.4.1 (the "License");
+you may not use the Oculus VR Rift SDK except in compliance with the License,
 which is provided at the time of installation or download, or which
 otherwise accompanies this software in either electronic or hard copy form.
 
@@ -11,7 +11,7 @@ You may obtain a copy of the License at
 
 https://developer.oculus.com/licenses/sdk-3.4.1
 
-Unless required by applicable law or agreed to in writing, the Oculus SDK
+Unless required by applicable law or agreed to in writing, the Oculus VR SDK
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
@@ -30,8 +30,6 @@ class OVREngineConfigurationUpdater
 {
 	private const string prefName = "OVREngineConfigurationUpdater_Enabled";
 	private const string menuItemName = "Tools/Oculus/Use Required Project Settings";
-	private const string androidAssetsPath = "Assets/Plugins/Android/assets";
-	private const string androidManifestPath = "Assets/Plugins/Android/AndroidManifest.xml";
 	static bool setPrefsForUtilities;
 
 	[MenuItem(menuItemName)]
@@ -105,8 +103,7 @@ class OVREngineConfigurationUpdater
 
 		if (!setPrefsForUtilities)
 			return;
-
-		OVRPlugin.SendEvent("build_target", EditorUserBuildSettings.activeBuildTarget.ToString());
+		
 		EnforceAndroidSettings();
 		EnforceInputManagerBindings();
 #if UNITY_ANDROID
@@ -221,18 +218,6 @@ class OVREngineConfigurationUpdater
 			BindAxis(new Axis() { name = "Oculus_GearVR_DpadY",         axis =  5, invert = true });
 			BindAxis(new Axis() { name = "Oculus_GearVR_LIndexTrigger", axis = 12,               });
 			BindAxis(new Axis() { name = "Oculus_GearVR_RIndexTrigger", axis = 11,               });
-			BindAxis(new Axis() { name = "Oculus_CrossPlatform_Button2", positiveButton = "joystick button 0", gravity = 1000f, sensitivity = 1000f, type = 0 });
-			BindAxis(new Axis() { name = "Oculus_CrossPlatform_Button4", positiveButton = "joystick button 2", gravity = 1000f, sensitivity = 1000f, type = 0 });
-			BindAxis(new Axis() { name = "Oculus_CrossPlatform_PrimaryThumbstick", positiveButton = "joystick button 8", gravity = 0f, dead = 0f, sensitivity = 0.1f, type = 0 });
-			BindAxis(new Axis() { name = "Oculus_CrossPlatform_SecondaryThumbstick", positiveButton = "joystick button 9", gravity = 0f, dead = 0f, sensitivity = 0.1f, type = 0 });
-			BindAxis(new Axis() { name = "Oculus_CrossPlatform_PrimaryIndexTrigger", dead = 0.19f, type = 2, axis = 8, joyNum = 0 });
-			BindAxis(new Axis() { name = "Oculus_CrossPlatform_SecondaryIndexTrigger", dead = 0.19f, type = 2, axis = 9, joyNum = 0 });
-			BindAxis(new Axis() { name = "Oculus_CrossPlatform_PrimaryHandTrigger", dead = 0.19f, type = 2, axis = 10, joyNum = 0 });
-			BindAxis(new Axis() { name = "Oculus_CrossPlatform_SecondaryHandTrigger", dead = 0.19f, type = 2, axis = 11, joyNum = 0 });
-			BindAxis(new Axis() { name = "Oculus_CrossPlatform_PrimaryThumbstickHorizontal", dead = 0.19f, type = 2, axis = 0, joyNum = 0 });
-			BindAxis(new Axis() { name = "Oculus_CrossPlatform_PrimaryThumbstickVertical", dead = 0.19f, type = 2, axis = 1, joyNum = 0, invert = true });
-			BindAxis(new Axis() { name = "Oculus_CrossPlatform_SecondaryThumbstickHorizontal", dead = 0.19f, type = 2, axis = 3, joyNum = 0 });
-			BindAxis(new Axis() { name = "Oculus_CrossPlatform_SecondaryThumbstickVertical", dead = 0.19f, type = 2, axis = 4, joyNum = 0, invert = true });
 		}
 		catch
 		{
@@ -247,25 +232,22 @@ class OVREngineConfigurationUpdater
 			return;
 		
 		// Don't warn if the project may be set up for submission or global signing.
-		if (File.Exists(androidManifestPath))
+		if (File.Exists("Assets/Plugins/Android/AndroidManifest.xml"))
 			return;
-
+		
+		var files = Directory.GetFiles("Assets/Plugins/Android/assets");
 		bool foundPossibleOsig = false;
-		if (Directory.Exists(androidAssetsPath))
+		for (int i = 0; i < files.Length; ++i)
 		{
-			var files = Directory.GetFiles(androidAssetsPath);
-			for (int i = 0; i < files.Length; ++i)
+			if (!files[i].Contains(".txt"))
 			{
-				if (!files[i].Contains(".txt"))
-				{
-					foundPossibleOsig = true;
-					break;
-				}
+				foundPossibleOsig = true;
+				break;
 			}
 		}
 
 		if (!foundPossibleOsig)
-			Debug.LogWarning("Missing Gear VR OSIG at " + androidAssetsPath + ". Please see https://dashboard.oculus.com/tools/osig-generator");
+			Debug.LogWarning("Missing Gear VR OSIG at Assets/Plugins/Android/assets. Please see https://dashboard.oculus.com/tools/osig-generator");
 	}
 
 	private class Axis

@@ -1,9 +1,9 @@
 /************************************************************************************
 
-Copyright   :   Copyright (c) Facebook Technologies, LLC and its affiliates. All rights reserved.
+Copyright   :   Copyright 2017 Oculus VR, LLC. All Rights reserved.
 
-Licensed under the Oculus SDK License Version 3.4.1 (the "License");
-you may not use the Oculus SDK except in compliance with the License,
+Licensed under the Oculus VR Rift SDK License Version 3.4.1 (the "License");
+you may not use the Oculus VR Rift SDK except in compliance with the License,
 which is provided at the time of installation or download, or which
 otherwise accompanies this software in either electronic or hard copy form.
 
@@ -11,7 +11,7 @@ You may obtain a copy of the License at
 
 https://developer.oculus.com/licenses/sdk-3.4.1
 
-Unless required by applicable law or agreed to in writing, the Oculus SDK
+Unless required by applicable law or agreed to in writing, the Oculus VR SDK
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
@@ -34,11 +34,6 @@ public class OVRScreenFade : MonoBehaviour
 	public Color fadeColor = new Color(0.01f, 0.01f, 0.01f, 1.0f);
 
     public bool fadeOnStart = true;
-
-	/// <summary>
-	/// The render queue used by the fade mesh. Reduce this if you need to render on top of it.
-	/// </summary>
-	public int renderQueue = 5000;
 
     private float uiFadeAlpha = 0;
 
@@ -102,7 +97,7 @@ public class OVRScreenFade : MonoBehaviour
 
 		mesh.uv = uv;
 
-		SetFadeLevel(0);
+		fadeRenderer.material = fadeMaterial;
 	}
 
     /// <summary>
@@ -201,7 +196,6 @@ public class OVRScreenFade : MonoBehaviour
         if (fadeMaterial != null)
         {
             fadeMaterial.color = color;
-			fadeMaterial.renderQueue = renderQueue;
 			fadeRenderer.material = fadeMaterial;
 			fadeRenderer.enabled = isFading;
         }

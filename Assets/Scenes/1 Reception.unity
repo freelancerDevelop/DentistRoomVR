@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.574817, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -993,6 +993,7 @@ Camera:
   m_TargetEye: 1
   m_HDR: 0
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -1822,9 +1823,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300020, guid: edc67c3e39ab2b449818b7b168c637f2, type: 3}
 --- !u!1 &645249935
@@ -1931,6 +1932,7 @@ Camera:
   m_TargetEye: 2
   m_HDR: 0
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -2367,6 +2369,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -2588,9 +2591,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300014, guid: edc67c3e39ab2b449818b7b168c637f2, type: 3}
 --- !u!4 &765040742 stripped
@@ -3220,9 +3223,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300020, guid: edc67c3e39ab2b449818b7b168c637f2, type: 3}
 --- !u!4 &1042685724 stripped
@@ -3299,9 +3302,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300020, guid: edc67c3e39ab2b449818b7b168c637f2, type: 3}
 --- !u!1 &1052719360
@@ -3389,9 +3392,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: edc67c3e39ab2b449818b7b168c637f2, type: 3}
 --- !u!1001 &1112702079
@@ -3831,9 +3834,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300004, guid: 81412ec832154b94aa642becf5c521aa, type: 3}
 --- !u!1001 &1241394774
@@ -4234,9 +4237,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300020, guid: edc67c3e39ab2b449818b7b168c637f2, type: 3}
 --- !u!4 &1382367608 stripped
@@ -4474,9 +4477,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300002, guid: 81412ec832154b94aa642becf5c521aa, type: 3}
 --- !u!4 &1544479570 stripped
@@ -4678,9 +4681,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300014, guid: edc67c3e39ab2b449818b7b168c637f2, type: 3}
 --- !u!1001 &1607590775
@@ -5596,6 +5599,26 @@ Prefab:
       propertyPath: m_RootOrder
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 114670784072199052, guid: 09a18452c4adc964798aaff21137bc66,
+        type: 2}
+      propertyPath: ControllerLeft
+      value: 
+      objectReference: {fileID: 610382385}
+    - target: {fileID: 114670784072199052, guid: 09a18452c4adc964798aaff21137bc66,
+        type: 2}
+      propertyPath: ControllerRight
+      value: 
+      objectReference: {fileID: 1847961423}
+    - target: {fileID: 114670784072199052, guid: 09a18452c4adc964798aaff21137bc66,
+        type: 2}
+      propertyPath: HandLeft
+      value: 
+      objectReference: {fileID: 1732081187}
+    - target: {fileID: 114670784072199052, guid: 09a18452c4adc964798aaff21137bc66,
+        type: 2}
+      propertyPath: HandRight
+      value: 
+      objectReference: {fileID: 2051851459}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 09a18452c4adc964798aaff21137bc66, type: 2}
   m_IsPrefabParent: 0
@@ -5928,9 +5951,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Convex: 0
-  m_InflateMesh: 0
+  m_CookingOptions: 14
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300020, guid: edc67c3e39ab2b449818b7b168c637f2, type: 3}
 --- !u!4 &1946912657 stripped

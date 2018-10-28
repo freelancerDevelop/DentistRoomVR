@@ -17,6 +17,6 @@ public class ScebeChangeToDentist : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        SceneManager.LoadScene("3 Dentitst Room");
+        SceneManager.LoadScene("3 Dentist Room");
     }
 }

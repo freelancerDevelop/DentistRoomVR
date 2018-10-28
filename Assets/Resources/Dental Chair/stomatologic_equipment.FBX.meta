@@ -68,6 +68,11 @@ ModelImporter:
     100124: medical tool_9
     100126: //RootNode
     100128: X-ray
+    100130: dental chair_1_MeshPart0
+    100132: dental chair_1_MeshPart1
+    100134: dental chair_1_MeshPart2
+    100136: X-ray_MeshPart0
+    100138: X-ray_MeshPart1
     400000: container_1
     400002: container_10
     400004: container_11
@@ -133,6 +138,11 @@ ModelImporter:
     400124: medical tool_9
     400126: //RootNode
     400128: X-ray
+    400130: dental chair_1_MeshPart0
+    400132: dental chair_1_MeshPart1
+    400134: dental chair_1_MeshPart2
+    400136: X-ray_MeshPart0
+    400138: X-ray_MeshPart1
     2100000: plastic black
     2100002: chrom
     2100004: seat
@@ -232,6 +242,11 @@ ModelImporter:
     2300118: medical tool_8
     2300120: medical tool_9
     2300122: X-ray
+    2300124: dental chair_1_MeshPart0
+    2300126: dental chair_1_MeshPart1
+    2300128: dental chair_1_MeshPart2
+    2300130: X-ray_MeshPart0
+    2300132: X-ray_MeshPart1
     3300000: container_1
     3300002: container_10
     3300004: container_11
@@ -294,6 +309,11 @@ ModelImporter:
     3300118: medical tool_8
     3300120: medical tool_9
     3300122: X-ray
+    3300124: dental chair_1_MeshPart0
+    3300126: dental chair_1_MeshPart1
+    3300128: dental chair_1_MeshPart2
+    3300130: X-ray_MeshPart0
+    3300132: X-ray_MeshPart1
     4300000: dental chair_small
     4300002: dental chair_1
     4300004: dental chair_2
@@ -356,6 +376,11 @@ ModelImporter:
     4300118: medical tool_18
     4300120: fabric
     4300122: dental table
+    4300124: dental chair_1_MeshPart0
+    4300126: dental chair_1_MeshPart1
+    4300128: dental chair_1_MeshPart2
+    4300130: X-ray_MeshPart0
+    4300132: X-ray_MeshPart1
     6400000: container_1
     6400002: container_10
     6400004: container_11
@@ -418,6 +443,11 @@ ModelImporter:
     6400118: medical tool_8
     6400120: medical tool_9
     6400122: X-ray
+    6400124: dental chair_1_MeshPart0
+    6400126: dental chair_1_MeshPart1
+    6400128: dental chair_1_MeshPart2
+    6400130: X-ray_MeshPart0
+    6400132: X-ray_MeshPart1
     9500000: //RootNode
   externalObjects: {}
   materials:
@@ -462,8 +492,6 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88

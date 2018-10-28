@@ -356,12 +356,17 @@ public class AvatarMaterialEditor : MaterialEditor {
             Rect layerHeaderRect = GUILayoutUtility.GetRect(previewSize, previewSize, GUILayout.ExpandWidth(true));
 
             // Draw the preview texture
-            previewUtility.camera.transform.position = Vector3.forward * 5.0f;
-            previewUtility.camera.transform.rotation = Quaternion.identity;
-            previewUtility.camera.transform.LookAt(Vector3.zero);
+#if UNITY_2017_1_OR_NEWER
+            Camera cam = previewUtility.camera;
+#else
+            Camera cam = previewUtility.m_Camera;
+#endif
+            cam.transform.position = Vector3.forward * 5.0f;
+            cam.transform.rotation = Quaternion.identity;
+            cam.transform.LookAt(Vector3.zero);
             previewUtility.BeginStaticPreview(new Rect(0, 0, previewSize, previewSize));
             previewUtility.DrawMesh(previewMesh, Vector3.zero, Quaternion.identity, previewMaterials[i], 0);
-            previewUtility.camera.Render();
+            cam.Render();
             Texture preview = previewUtility.EndStaticPreview();
             GUI.Label(new Rect(layerHeaderRect.xMax - previewSize - buttonSize, layerHeaderRect.y, previewSize, previewSize), preview);
 

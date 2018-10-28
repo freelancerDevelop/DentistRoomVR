@@ -1,9 +1,9 @@
 /************************************************************************************
 
-Copyright   :   Copyright 2017 Oculus VR, LLC. All Rights reserved.
+Copyright   :   Copyright (c) Facebook Technologies, LLC and its affiliates. All rights reserved.
 
-Licensed under the Oculus VR Rift SDK License Version 3.4.1 (the "License");
-you may not use the Oculus VR Rift SDK except in compliance with the License,
+Licensed under the Oculus SDK License Version 3.4.1 (the "License");
+you may not use the Oculus SDK except in compliance with the License,
 which is provided at the time of installation or download, or which
 otherwise accompanies this software in either electronic or hard copy form.
 
@@ -11,7 +11,7 @@ You may obtain a copy of the License at
 
 https://developer.oculus.com/licenses/sdk-3.4.1
 
-Unless required by applicable law or agreed to in writing, the Oculus VR SDK
+Unless required by applicable law or agreed to in writing, the Oculus SDK
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
@@ -23,12 +23,40 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using System.Collections.Generic;
+
+#if UNITY_2017_2_OR_NEWER
+using InputTracking = UnityEngine.XR.InputTracking;
+using Node = UnityEngine.XR.XRNode;
+using NodeState = UnityEngine.XR.XRNodeState;
+using Settings = UnityEngine.XR.XRSettings;
+#elif UNITY_2017_1_OR_NEWER
+using InputTracking = UnityEngine.VR.InputTracking;
+using Node = UnityEngine.VR.VRNode;
+using NodeState = UnityEngine.VR.VRNodeState;
+using Settings = UnityEngine.VR.VRSettings;
+#else
+using Node = UnityEngine.VR.VRNode;
+using Settings = UnityEngine.VR.VRSettings;
+#endif
 
 /// <summary>
 /// Manages an Oculus Rift head-mounted display (HMD).
 /// </summary>
 public class OVRDisplay
 {
+	/// <summary>
+	/// Contains full fov information per eye
+	/// Under Symmetric Fov mode, UpFov == DownFov and LeftFov == RightFov.
+	/// </summary>
+	public struct EyeFov
+	{
+		public float UpFov;
+		public float DownFov;
+		public float LeftFov;
+		public float RightFov;
+	}
+
 	/// <summary>
 	/// Specifies the size and field-of-view for one eye texture.
 	/// </summary>
@@ -41,8 +69,16 @@ public class OVRDisplay
 
 		/// <summary>
 		/// The angle of the horizontal and vertical field of view in degrees.
+		/// For Symmetric FOV interface compatibility
+		/// Note this includes the fov angle from both sides
 		/// </summary>
 		public Vector2 fov;
+
+		/// <summary>
+		/// The full information of field of view in degrees.
+		/// When Asymmetric FOV isn't enabled, this returns the maximum fov angle
+		/// </summary>
+		public EyeFov fullFov;
 	}
 
 	/// <summary>
@@ -136,12 +172,13 @@ public class OVRDisplay
 			if (!OVRManager.isHmdPresent)
 				return Vector3.zero;
 
-			return OVRPlugin.GetNodeAcceleration(OVRPlugin.Node.None, OVRPlugin.Step.Render).FromFlippedZVector3f();
+			return OVRNodeStateProperties.GetNodeStateProperty(Node.Head, NodeStatePropertyType.Acceleration, OVRPlugin.Node.Head, OVRPlugin.Step.Render);
+
 		}
 	}
 
     /// <summary>
-    /// Gets the current angular acceleration of the head.
+    /// Gets the current angular acceleration of the head in radians per second per second about each axis.
     /// </summary>
     public Vector3 angularAcceleration
     {
@@ -150,12 +187,13 @@ public class OVRDisplay
             if (!OVRManager.isHmdPresent)
 				return Vector3.zero;
 
-			return OVRPlugin.GetNodeAngularAcceleration(OVRPlugin.Node.None, OVRPlugin.Step.Render).FromFlippedZVector3f() * Mathf.Rad2Deg;
+			return OVRNodeStateProperties.GetNodeStateProperty(Node.Head, NodeStatePropertyType.AngularAcceleration, OVRPlugin.Node.Head, OVRPlugin.Step.Render);
+
         }
     }
 
     /// <summary>
-    /// Gets the current linear velocity of the head.
+    /// Gets the current linear velocity of the head in meters per second.
     /// </summary>
     public Vector3 velocity
     {
@@ -164,12 +202,13 @@ public class OVRDisplay
             if (!OVRManager.isHmdPresent)
                 return Vector3.zero;
 
-			return OVRPlugin.GetNodeVelocity(OVRPlugin.Node.None, OVRPlugin.Step.Render).FromFlippedZVector3f();
+			return OVRNodeStateProperties.GetNodeStateProperty(Node.Head, NodeStatePropertyType.Velocity, OVRPlugin.Node.Head, OVRPlugin.Step.Render);
+
         }
     }
 	
 	/// <summary>
-	/// Gets the current angular velocity of the head.
+	/// Gets the current angular velocity of the head in radians per second about each axis.
 	/// </summary>
 	public Vector3 angularVelocity
 	{
@@ -177,7 +216,8 @@ public class OVRDisplay
 			if (!OVRManager.isHmdPresent)
 				return Vector3.zero;
 
-			return OVRPlugin.GetNodeAngularVelocity(OVRPlugin.Node.None, OVRPlugin.Step.Render).FromFlippedZVector3f() * Mathf.Rad2Deg;
+			return OVRNodeStateProperties.GetNodeStateProperty(Node.Head, NodeStatePropertyType.AngularVelocity, OVRPlugin.Node.Head, OVRPlugin.Step.Render);
+
 		}
 	}
 
@@ -293,13 +333,44 @@ public class OVRDisplay
 		if (!OVRManager.isHmdPresent)
 			return;
 
-		OVRPlugin.Sizei size = OVRPlugin.GetEyeTextureSize((OVRPlugin.Eye)eye);
-		OVRPlugin.Frustumf frust = OVRPlugin.GetEyeFrustum((OVRPlugin.Eye)eye);
+		int eyeTextureWidth = Settings.eyeTextureWidth;
+		int eyeTextureHeight = Settings.eyeTextureHeight;
 
-		eyeDescs[(int)eye] = new EyeRenderDesc()
+		eyeDescs[(int)eye] = new EyeRenderDesc();
+		eyeDescs[(int)eye].resolution = new Vector2(eyeTextureWidth, eyeTextureHeight);
+
+		OVRPlugin.Frustumf2 frust;
+		if (OVRPlugin.GetNodeFrustum2((OVRPlugin.Node)eye, out frust))
 		{
-			resolution = new Vector2(size.w, size.h),
-            fov = Mathf.Rad2Deg * new Vector2(frust.fovX, frust.fovY),
-		};
+			eyeDescs[(int)eye].fullFov.LeftFov = Mathf.Rad2Deg * Mathf.Atan(frust.Fov.LeftTan);
+			eyeDescs[(int)eye].fullFov.RightFov = Mathf.Rad2Deg * Mathf.Atan(frust.Fov.RightTan);
+			eyeDescs[(int)eye].fullFov.UpFov = Mathf.Rad2Deg * Mathf.Atan(frust.Fov.UpTan);
+			eyeDescs[(int)eye].fullFov.DownFov = Mathf.Rad2Deg * Mathf.Atan(frust.Fov.DownTan);
+		}
+		else
+		{
+			OVRPlugin.Frustumf frustOld = OVRPlugin.GetEyeFrustum((OVRPlugin.Eye)eye);
+			eyeDescs[(int)eye].fullFov.LeftFov = Mathf.Rad2Deg * frustOld.fovX * 0.5f;
+			eyeDescs[(int)eye].fullFov.RightFov = Mathf.Rad2Deg * frustOld.fovX * 0.5f;
+			eyeDescs[(int)eye].fullFov.UpFov = Mathf.Rad2Deg * frustOld.fovY * 0.5f;
+			eyeDescs[(int)eye].fullFov.DownFov = Mathf.Rad2Deg * frustOld.fovY * 0.5f;
+		}
+
+		// Symmetric Fov uses the maximum fov angle
+		float maxFovX = Mathf.Max(eyeDescs[(int)eye].fullFov.LeftFov, eyeDescs[(int)eye].fullFov.RightFov);
+		float maxFovY = Mathf.Max(eyeDescs[(int)eye].fullFov.UpFov, eyeDescs[(int)eye].fullFov.DownFov);
+		eyeDescs[(int)eye].fov.x = maxFovX * 2.0f;
+		eyeDescs[(int)eye].fov.y = maxFovY * 2.0f;
+
+		if (!OVRPlugin.AsymmetricFovEnabled)
+		{
+			eyeDescs[(int)eye].fullFov.LeftFov = maxFovX;
+			eyeDescs[(int)eye].fullFov.RightFov = maxFovX;
+
+			eyeDescs[(int)eye].fullFov.UpFov = maxFovY;
+			eyeDescs[(int)eye].fullFov.DownFov = maxFovY;
+		}
+
+
 	}
 }

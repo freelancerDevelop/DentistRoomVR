@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;      
+using UnityEngine.SceneManagement;
 
-public class SceneChangeToXray : MonoBehaviour {
+public class ScebeChangeToDentist : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -17,6 +17,6 @@ public class SceneChangeToXray : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        SceneManager.LoadScene("2 X Ray Room");
+        SceneManager.LoadScene("3 Dentitst Room");
     }
 }

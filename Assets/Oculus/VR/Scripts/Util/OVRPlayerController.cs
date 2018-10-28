@@ -153,19 +153,8 @@ public class OVRPlayerController : MonoBehaviour
 	private float buttonRotation = 0f;
 	private bool ReadyToSnapTurn; // Set to true when a snap turn has occurred, code requires one frame of centered thumbstick to enable another snap turn.
 
-    void OnTriggerEnter(Collider coll)
-    {
-        //add the tag u chose here 
-        if (coll.tag == "change")
-        {
-            //load the scene
-            SceneManager.LoadScene("1 Reception");
-            
-        }
-
-    }
-
-
+   
+   
     void Start()
 	{
 		// Add eye-depth as a camera offset from the player controller
